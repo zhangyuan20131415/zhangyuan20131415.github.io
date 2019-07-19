@@ -1,0 +1,157 @@
+<!DOCTYPE HTML>
+<!--
+	Phantom by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+	<title>welcome</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<noscript>
+		<link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+
+<body class="is-preload">
+	<!-- Wrapper -->
+	<div id="wrapper">
+
+		<!-- Header -->
+		<header id="header">
+			<div class="inner">
+
+				<!-- Logo -->
+				<a href="index.html" class="logo">
+					<span class="symbol"><img src="images/logo.svg" alt="" /></span><span class="title">Phantom</span>
+				</a>
+
+				<!-- Nav -->
+				<nav>
+					<ul>
+						<li><a href="#menu">Menu</a></li>
+					</ul>
+				</nav>
+
+			</div>
+		</header>
+
+		<!-- Menu -->
+		<nav id="menu">
+			<h2>Menu</h2>
+			<ul>
+				<li><a href="index.html">Home</a></li>
+				<li><a href="generic.html">Ipsum veroeros</a></li>
+				<li><a href="generic.html">Tempus etiam</a></li>
+				<li><a href="generic.html">Consequat dolor</a></li>
+				<li><a href="elements.html">Elements</a></li>
+			</ul>
+		</nav>
+
+		<!-- Main -->
+		<div id="main">
+			<div class="inner">
+				<header>
+					<h1>前端如何下载文件</h1>
+					<p>最近项目里有个功能需要下载报告（psd），然后试验了一些方法，做一些总结。</p>
+				</header>
+                <h3>方法一：</h3>
+                <p>window.open()可以直接打开一个窗口，针对psd来说，他打开之后是有一个下载按钮的，我们再点击下载，是可以实现下载功能的，but,这样的用户体验应该是不那么好的。我们领导说，我们追求的是极简，那就下一个吧~</p>
+                <h3>方法二：</h3>
+                <p>a标签下载，最开始我试过了，一般的文件都可以通过<pre><code><xmp><a href="xxx.pdf" download="filename.pdf"></a></xmp></code></pre>
+                然后发现图片获取其他docx可以直接下载，我想也许其他类型的文件也可以直接下载，大家可以都试试，但是我试的pdf不可以直接下，也是直接打开一个新的页面。但是听说把pdf文件的MIME type改为application/octet-stream并加入Content-Disposition:attachment header,这样就可以了呢！等后端的同事有时间了，让他们帮忙试一下。
+                </p>
+                <h3>方法三：</h3>
+                <p>如果你后端的同事非常的忙，没时候帮忙改，那么就只能自己动手，丰衣足食了。</p>
+                <p>使用file-saver插件</p>
+                <pre>
+                    <code>
+                        import { saveAs } from 'file-saver';
+
+                        var oReq = new XMLHttpRequest();
+
+                        var URLToPDF = "https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf";
+
+                        // Configure XMLHttpRequest
+                        oReq.open("GET", URLToPDF, true);
+                        // Important to use the blob response type
+                        oReq.responseType = "blob";
+                        // When the file request finishes
+                        // Is up to you, the configuration for error events etc.
+                        oReq.onload = function() {
+                            // Once the file is downloaded, open a new window with the PDF
+                            // Remember to allow the POP-UPS in your browser
+                            var file = new Blob([oReq.response], { 
+                                type: 'application/pdf' 
+                            });
+                            
+                            // Generate file download directly in the browser !
+                            saveAs(file, "mypdffilename.pdf");
+                        };
+                        oReq.send();
+                    </code>
+                </pre>
+                <p>今天就到这里了，以上</p>
+			</div>
+		</div>
+
+		<!-- Footer -->
+		<footer id="footer">
+			<div class="inner">
+				<section>
+					<h2>Get in touch</h2>
+					<form method="post" action="#">
+						<div class="fields">
+							<div class="field half">
+								<input type="text" name="name" id="name" placeholder="Name" />
+							</div>
+							<div class="field half">
+								<input type="email" name="email" id="email" placeholder="Email" />
+							</div>
+							<div class="field">
+								<textarea name="message" id="message" placeholder="Message"></textarea>
+							</div>
+						</div>
+						<ul class="actions">
+							<li><input type="submit" value="Send" class="primary" /></li>
+						</ul>
+					</form>
+				</section>
+				<section>
+					<h2>Follow</h2>
+					<ul class="icons">
+						<li><a href="#" class="icon brands style2 fa-twitter"><span class="label">Twitter</span></a>
+						</li>
+						<li><a href="#" class="icon brands style2 fa-facebook-f"><span class="label">Facebook</span></a>
+						</li>
+						<li><a href="#" class="icon brands style2 fa-instagram"><span class="label">Instagram</span></a>
+						</li>
+						<li><a href="#" class="icon brands style2 fa-dribbble"><span class="label">Dribbble</span></a>
+						</li>
+						<li><a href="#" class="icon brands style2 fa-github"><span class="label">GitHub</span></a></li>
+						<li><a href="#" class="icon brands style2 fa-500px"><span class="label">500px</span></a></li>
+						<li><a href="#" class="icon solid style2 fa-phone"><span class="label">Phone</span></a></li>
+						<li><a href="#" class="icon solid style2 fa-envelope"><span class="label">Email</span></a></li>
+					</ul>
+				</section>
+				<ul class="copyright">
+					<li>&copy; Untitled. All rights reserved</li>
+					<li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+				</ul>
+			</div>
+		</footer>
+
+	</div>
+
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+
+</body>
+
+</html>
