@@ -55,16 +55,50 @@
 			<div class="inner">
 				<header>
 					<h1>前端如何下载文件</h1>
-					<p>最近项目里有个功能需要下载报告（psd），然后试验了一些方法，做一些总结。</p>
+					<p>最近项目里有个功能需要下载报告（pdf），然后试验了一些方法，做一些总结。</p>
 				</header>
                 <h3>方法一：</h3>
-                <p>window.open()可以直接打开一个窗口，针对psd来说，他打开之后是有一个下载按钮的，我们再点击下载，是可以实现下载功能的，but,这样的用户体验应该是不那么好的。我们领导说，我们追求的是极简，那就下一个吧~</p>
+                <p>window.open()可以直接打开一个窗口，针对psd来说，他打开之后是有一个下载按钮的，我们再点击下载，是可以实现下载功能的，but,这样的用户体验应该是不那么好的。反正产品那一关都是过不了的，用领导的话说我们追求的是极简，嗯，那就下一个吧~</p>
                 <h3>方法二：</h3>
-                <p>a标签下载，最开始我试过了，一般的文件都可以通过<pre><code><xmp><a href="xxx.pdf" download="filename.pdf"></a></xmp></code></pre>
-                然后发现图片获取其他docx可以直接下载，我想也许其他类型的文件也可以直接下载，大家可以都试试，但是我试的pdf不可以直接下，也是直接打开一个新的页面。但是听说把pdf文件的MIME type改为application/octet-stream并加入Content-Disposition:attachment header,这样就可以了呢！等后端的同事有时间了，让他们帮忙试一下。
-                </p>
+                <p>a标签下载，最开始我试的时候，一般的文件都可以通过<pre><code><xmp><a href="xxx.pdf" download="filename.pdf"></a></xmp></code></pre>
+				然后发现图片获取其他docx可以直接下载，我想也许其他类型的文件也可以直接下载，大家可以都试试，但是我试的pdf不可以直接下，也是直接打开一个新的页面。但是听说把pdf文件的MIME type改为application/octet-stream并加入Content-Disposition:attachment header,这样就可以了呢！等后端的同事有时间了，让他们帮忙试一下。
+				嗯，如果后端的同学直接返回了流文件，我们得到的不是一个地址，那么我们可以用URL.createObjectURL(blob)将这个流文件映射到一个地址上，那么就可以用a标签来下载了。如果是流文件，我们要注意设置responseType为arraybuffer或者blob。
+				</p>
+				<pre>
+				<code>
+			handleXhr(url) {
+				return new Promise((resolve, reject) => {
+					var xhr = new XMLHttpRequest()
+					xhr.open('POST', url, true)
+					// 无论是原生的还是库，都要记得设置
+					xhr.responseType = 'arraybuffer'
+					xhr.onload = function(e) {
+						if (this.status >= 200 && this.status < 300) {
+							var blob = new Blob([this.response], { type: 'application/pdf' })
+							var link = document.createElement('a')
+							link.href = window.URL.createObjectURL(blob)
+							link.download = filename + '.pdf'
+							link.click()
+							// 要注意释放内存
+							window.URL.revokeObjectURL(link.href)
+							link = null
+							resolve()
+						} else {
+							reject()
+						}
+					}
+					xhr.onerror = () => {
+						reject()
+					}
+					xhr.ontimeout = () => {
+						reject()
+					}
+					xhr.send(params)
+				})
+			}
+				</code>
+				</pre>
                 <h3>方法三：</h3>
-                <p>如果你后端的同事非常的忙，没时候帮忙改，那么就只能自己动手，丰衣足食了。</p>
                 <p>使用file-saver插件</p>
                 <pre>
                     <code>
