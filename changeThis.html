@@ -1,0 +1,161 @@
+<!DOCTYPE HTML>
+<!--
+	Phantom by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+    <title>welcome</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript>
+        <link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+
+<body class="is-preload">
+    <!-- Wrapper -->
+    <div id="wrapper">
+
+        <!-- Header -->
+        <header id="header">
+            <div class="inner">
+
+                <!-- Logo -->
+                <a href="index.html" class="logo">
+                    <span class="symbol"><img src="images/logo.svg" alt="" /></span><span class="title">Phantom</span>
+                </a>
+
+                <!-- Nav -->
+                <nav>
+                    <ul>
+                        <li><a href="#menu">Menu</a></li>
+                    </ul>
+                </nav>
+
+            </div>
+        </header>
+
+        <!-- Menu -->
+        <nav id="menu">
+            <h2>Menu</h2>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="generic.html">Ipsum veroeros</a></li>
+                <li><a href="generic.html">Tempus etiam</a></li>
+                <li><a href="generic.html">Consequat dolor</a></li>
+                <li><a href="elements.html">Elements</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main -->
+        <div id="main">
+            <div class="inner">
+                <header>
+                    <h1>关于call、apply、bind的区别</h1>
+                    <p>我们经常遇见的call,apply,bind差别问题，今天来总结一下吧！</p>
+                </header>
+                <p>这三个方法的存在都是为了改变函数<em>执行的上下文</em>,既改变this的指向。call和apply会在改变this指向之后直接执行，但是bind是在改变上下文之后返回一个函数，等到我们需要执行的之后再调用该函数即可。
+                </p>
+                <h3>关于call</h3>
+                <p>call方法接收的第一个参数是要改成的执行上下文的对象，后续接收的参数都作为调用一个函数的参数。</p>
+                <pre>
+				<code>
+                    Math.min.call(null, 1, 2, 3]) // 1
+				</code>
+				</pre>
+                <h3>关于apply</h3>
+                <p>apply接收两个参数，第一个是要改变的执行上下文的对象，第二个是要调用的函数的参数。</p>
+                <pre>
+                    <code>
+                        Math.min.apply(undefined, [1, 2, 3]) // 1
+                    </code>
+                </pre>
+                <h3>关于bind</h3>
+                <p>bind()方法创建一个新的函数，在bind()被调用时，这个新函数的this被bind的第一个参数指定，其余的参数将作为新函数的参数供调用时使用。
+                </p>
+                <pre>
+                    <code>
+                       var binder = Math.min.bind(undefined, 1, 2, 3)
+                       binder() //1
+                    </code>
+                </pre>
+                <h3>关于用call或者apply实现继承</h3>
+                <pre>
+                    <code>
+                       function People(name) {
+                           this.name = name
+                           this.sayHi = function() {
+                               console.log('hi, i\'m ${this.name}')
+                           }
+                       }
+                       function Person(name) {
+                           People.call(this, name) || People.apply(this, [name])
+                       }
+                       var person = new Person('lili')
+                       person.sayHi() // 'lili'
+                    </code>
+                </pre>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer id="footer">
+            <div class="inner">
+                <section>
+                    <h2>Get in touch</h2>
+                    <form method="post" action="#">
+                        <div class="fields">
+                            <div class="field half">
+                                <input type="text" name="name" id="name" placeholder="Name" />
+                            </div>
+                            <div class="field half">
+                                <input type="email" name="email" id="email" placeholder="Email" />
+                            </div>
+                            <div class="field">
+                                <textarea name="message" id="message" placeholder="Message"></textarea>
+                            </div>
+                        </div>
+                        <ul class="actions">
+                            <li><input type="submit" value="Send" class="primary" /></li>
+                        </ul>
+                    </form>
+                </section>
+                <section>
+                    <h2>Follow</h2>
+                    <ul class="icons">
+                        <li><a href="#" class="icon brands style2 fa-twitter"><span class="label">Twitter</span></a>
+                        </li>
+                        <li><a href="#" class="icon brands style2 fa-facebook-f"><span class="label">Facebook</span></a>
+                        </li>
+                        <li><a href="#" class="icon brands style2 fa-instagram"><span class="label">Instagram</span></a>
+                        </li>
+                        <li><a href="#" class="icon brands style2 fa-dribbble"><span class="label">Dribbble</span></a>
+                        </li>
+                        <li><a href="#" class="icon brands style2 fa-github"><span class="label">GitHub</span></a></li>
+                        <li><a href="#" class="icon brands style2 fa-500px"><span class="label">500px</span></a></li>
+                        <li><a href="#" class="icon solid style2 fa-phone"><span class="label">Phone</span></a></li>
+                        <li><a href="#" class="icon solid style2 fa-envelope"><span class="label">Email</span></a></li>
+                    </ul>
+                </section>
+                <ul class="copyright">
+                    <li>&copy; Untitled. All rights reserved</li>
+                    <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+                </ul>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+
+</body>
+
+</html>
